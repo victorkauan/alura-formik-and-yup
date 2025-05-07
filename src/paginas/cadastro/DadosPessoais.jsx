@@ -5,7 +5,7 @@ import { ListaSupensa } from "../../componentes/ListaSuspensa/ListaSuspensa";
 import { Col, Row } from "react-grid-system";
 import { Botao } from "../../componentes/Botao/Botao";
 import { Link } from "react-router-dom";
-import { Form, Formik } from "formik";
+import { Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 
 const estadosBrasileiros = [
@@ -56,6 +56,7 @@ const schema = Yup.object().shape({
     confirmarSenha: Yup.string()
         .required("Campo obrigatório")
         .oneOf([Yup.ref("senha"), null], "As senhas não conferem"),
+    termos: Yup.boolean().oneOf([true], "Você deve aceitar os termos"),
 });
 
 const DadosPessoais = () => {
@@ -69,6 +70,7 @@ const DadosPessoais = () => {
                 email: "",
                 senha: "",
                 confirmarSenha: "",
+                termos: false,
             }}
             validationSchema={schema}
         >
@@ -142,6 +144,17 @@ const DadosPessoais = () => {
                             />
                         </Col>
                     </Row>
+                    <Row>
+                        <label>
+                            <Field name="termos" type="checkbox" />
+                            Aceito os termos e condições
+                        </label>
+                    </Row>
+                    {formik.errors.termos && (
+                        <div style={{ color: "red", marginTop: "4px" }}>
+                            {formik.errors.termos}
+                        </div>
+                    )}
                     <Row>
                         <Col lg={6} md={6} sm={6}>
                             <Link to="/cadastro/interesses">
