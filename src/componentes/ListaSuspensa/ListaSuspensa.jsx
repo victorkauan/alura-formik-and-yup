@@ -2,7 +2,7 @@ import styled from "@emotion/styled";
 import { useState } from "react";
 import { ItemListaSuspensaEstilizado } from "./ItemListaSuspensaEstilizado";
 import { ListaSuspensaEstilizada } from "./ListaSuspensaEstilizada";
-import { useFormikContext } from "formik";
+import { ErrorMessage, useFormikContext } from "formik";
 
 const LabelEstilizada = styled.label`
     display: block;
@@ -116,6 +116,9 @@ export const ListaSupensa = ({ titulo, opcoes, name }) => {
                     ))}
                 </ListaSuspensaEstilizada>
             )}
+            <ErrorMessage name={name}>
+                {(mensagens) => <div style={{ color: "red" }}>{mensagens}</div>}
+            </ErrorMessage>
         </LabelEstilizada>
     );
 };
