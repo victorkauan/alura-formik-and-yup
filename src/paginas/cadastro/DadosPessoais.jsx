@@ -6,6 +6,7 @@ import { Col, Row } from "react-grid-system";
 import { Botao } from "../../componentes/Botao/Botao";
 import { Link } from "react-router-dom";
 import { Form, Formik } from "formik";
+import * as Yup from "yup";
 
 const estadosBrasileiros = [
     { text: "Acre", value: "AC" },
@@ -36,6 +37,27 @@ const estadosBrasileiros = [
     { text: "Sergipe", value: "SE" },
     { text: "Tocantins", value: "TO" },
 ];
+
+const schema = Yup.object().shape({
+    nome: Yup.string()
+        .required("Campo obrigatório")
+        .min(2, "Digite seu nome completo"),
+    estado: Yup.string()
+        .required("Campo obrigatório")
+        .max(58, "Digite uma cidade válida"),
+    cidade: Yup.string().required("Campo obrigatório"),
+    telefone: Yup.string()
+        .required("Campo obrigatório")
+        .matches(/^\d{11}$/, "Número de telefone inválido"),
+    email: Yup.string()
+        .required("Campo obrigatório")
+        .email("Digite um e-mail válido"),
+    senha: Yup.string().required("Campo obrigatório"),
+    confirmarSenha: Yup.string()
+        .required("Campo obrigatório")
+        .oneOf([Yup.ref("senha"), null], "As senhas não conferem"),
+});
+
 const DadosPessoais = () => {
     return (
         <Formik
@@ -48,52 +70,7 @@ const DadosPessoais = () => {
                 senha: "",
                 confirmarSenha: "",
             }}
-            validate={(values) => {
-                const errors = {};
-
-                if (!values.nome) {
-                    errors.nome = "Campo obrigatório";
-                }
-
-                if (!values.estado) {
-                    errors.estado = "Campo obrigatório";
-                }
-
-                if (!values.cidade) {
-                    errors.cidade = "Campo obrigatório";
-                }
-
-                if (!values.telefone) {
-                    errors.telefone = "Campo obrigatório";
-                } else if (!/^\d{11}$/i.test(values.telefone)) {
-                    errors.telefone = "Número de telefone inválido";
-                }
-
-                if (!values.email) {
-                    errors.email = "Campo obrigatório";
-                } else if (
-                    !/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(
-                        values.email
-                    )
-                ) {
-                    errors.email = "E-mail inválido";
-                }
-
-                if (!values.senha) {
-                    errors.senha = "Campo obrigatório";
-                }
-
-                if (!values.confirmarSenha) {
-                    errors.confirmarSenha = "Campo obrigatório";
-                } else if (values.senha !== values.confirmarSenha) {
-                    errors.confirmarSenha = "As senhas não conferem";
-                }
-
-                return errors;
-            }}
-            onSubmit={values => {
-              console.log(values)
-            }}
+            validationSchema={schema}
         >
             {(formik) => (
                 <Form onSubmit={formik.handleSubmit}>
