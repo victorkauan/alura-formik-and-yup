@@ -40,6 +40,8 @@ const estadosBrasileiros = [
 
 const schema = Yup.object().shape({
     nome: Yup.string()
+        .trim()
+        .lowercase()
         .required("Campo obrigatório")
         .min(2, "Digite seu nome completo"),
     nascimento: Yup.date()
