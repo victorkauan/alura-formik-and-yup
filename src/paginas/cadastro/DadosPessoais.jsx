@@ -42,6 +42,9 @@ const schema = Yup.object().shape({
     nome: Yup.string()
         .required("Campo obrigatório")
         .min(2, "Digite seu nome completo"),
+    nascimento: Yup.date()
+        .required("Campo obrigatório")
+        .max(new Date(), "Digite uma data válida"),
     estado: Yup.string()
         .required("Campo obrigatório")
         .max(58, "Digite uma cidade válida"),
@@ -64,6 +67,7 @@ const DadosPessoais = () => {
         <Formik
             initialValues={{
                 nome: "",
+                nascimento: "",
                 estado: "",
                 cidade: "",
                 telefone: "",
@@ -93,6 +97,13 @@ const DadosPessoais = () => {
                                 name="nome"
                                 titulo="Nome completo"
                                 type="text"
+                            />
+                        </Col>
+                        <Col>
+                            <CampoTexto
+                                name="nascimento"
+                                titulo="Data de nascimento"
+                                type="date"
                             />
                         </Col>
                     </Row>
