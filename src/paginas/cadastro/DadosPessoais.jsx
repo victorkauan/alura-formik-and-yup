@@ -91,6 +91,9 @@ const DadosPessoais = () => {
 
                 return errors;
             }}
+            onSubmit={values => {
+              console.log(values)
+            }}
         >
             {(formik) => (
                 <Form onSubmit={formik.handleSubmit}>
